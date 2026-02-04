@@ -1,0 +1,50 @@
+{
+    "quote": {
+        "column": {
+            "shipping_surcharge": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "shipping_surcharge": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true,
+            "shipping_surcharge_refunded": true,
+            "base_shipping_surcharge_refunded": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true
+        }
+    },
+    "sales_invoice": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true
+        }
+    },
+    "sales_invoice_item": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true
+        }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true
+        }
+    },
+    "sales_creditmemo_item": {
+        "column": {
+            "shipping_surcharge": true,
+            "base_shipping_surcharge": true
+        }
+    }
+}

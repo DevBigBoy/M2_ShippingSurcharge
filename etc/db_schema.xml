@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @by SwiftOtter, Inc.
+ * @website https://swiftotter.com
+ **/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" default="0.0000" comment="Total Surcharge Amount"/>
+    </table>
+
+    <table name="quote_item" resource="checkout" engine="innodb" comment="Sales Flat Quote Item">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Surcharge Amount"/>
+    </table>
+
+    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="shipping_surcharge_refunded" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Refunded"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge_refunded" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Refunded"/>
+    </table>
+
+    <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+    </table>
+
+    <table name="sales_invoice" resource="sales" engine="innodb" comment="Sales Flat Invoice">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+    </table>
+
+    <table name="sales_invoice_item" resource="sales" engine="innodb" comment="Sales Flat Invoice Item">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+    </table>
+
+    <table name="sales_creditmemo" resource="sales" engine="innodb" comment="Sales Flat Creditmemo">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+    </table>
+
+    <table name="sales_creditmemo_item" resource="sales" engine="innodb" comment="Sales Flat Creditmemo Item">
+        <column xsi:type="decimal" name="shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Shipping Surcharge Amount"/>
+        <column xsi:type="decimal" name="base_shipping_surcharge" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Shipping Surcharge Amount"/>
+    </table>
+
+</schema>
