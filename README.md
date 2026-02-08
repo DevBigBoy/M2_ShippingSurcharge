@@ -1,6 +1,6 @@
 # Market_ShippingSurcharge
 
-Magento 2 module that adds a per-product `shipping_surcharge` attribute, allowing store administrators to define an additional shipping charge on top of the standard carrier rate for individual products.
+Magento 2 module that adds a per-product `shipping_surcharge` attribute and the necessary database columns to carry the surcharge amount through the quote, order, invoice, and credit memo lifecycle.
 
 ## Overview
 
@@ -8,11 +8,43 @@ The `shipping_surcharge` attribute is a decimal price field scoped at the **webs
 
 ## Installation
 
+### Manual
+
+1. Copy the module to `app/code/Market/ShippingSurcharge`
+2. Run the following commands:
+
 ```bash
 bin/magento module:enable Market_ShippingSurcharge
 bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento setup:static-content:deploy
 bin/magento cache:flush
 ```
+
+### Via Composer
+
+```bash
+composer require market/module-shipping-surcharge
+bin/magento module:enable Market_ShippingSurcharge
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento setup:static-content:deploy
+bin/magento cache:flush
+```
+
+## Configuration
+
+After installation, navigate to:
+
+### Stores > Configuration > Market > Shipping Surcharge
+
+| Field                    | Description                                       |
+|--------------------------|---------------------------------------------------|
+| Enable Shipping Surcharge | Enable or disable the surcharge feature globally |
+
+The surcharge total sort order can be configured under:
+
+**Stores > Configuration > Sales > Sales > Checkout Totals Sort Order > Shipping Surcharge** (default: `35`)
 
 ## Attribute Details
 
@@ -27,15 +59,30 @@ bin/magento cache:flush
 | Used in product listing | Yes |
 | Visible on frontend | No |
 
-## Reverting
+## Database Changes
 
-The data patch implements `PatchRevertableInterface`. To remove the attribute:
+Adds `shipping_surcharge` columns to the following tables:
+
+| Table | Columns |
+|---|---|
+| `quote` | `shipping_surcharge` |
+| `quote_item` | `shipping_surcharge` |
+| `sales_order` | `shipping_surcharge`, `base_shipping_surcharge`, `shipping_surcharge_refunded`, `base_shipping_surcharge_refunded` |
+| `sales_order_item` | `shipping_surcharge`, `base_shipping_surcharge` |
+| `sales_invoice` | `shipping_surcharge`, `base_shipping_surcharge` |
+| `sales_invoice_item` | `shipping_surcharge`, `base_shipping_surcharge` |
+| `sales_creditmemo` | `shipping_surcharge`, `base_shipping_surcharge` |
+| `sales_creditmemo_item` | `shipping_surcharge`, `base_shipping_surcharge` |
+
+## Uninstalling
 
 ```bash
-bin/magento setup:db-declaration:generate-patch Market_ShippingSurcharge revert
+bin/magento module:uninstall Market_ShippingSurcharge
+bin/magento setup:upgrade
+bin/magento cache:flush
 ```
 
-Or programmatically via `bin/magento setup:rollback`.
+This will trigger the `revert()` method on the data patch, removing the `shipping_surcharge` product attribute. Note that database columns added via `db_schema.xml` will also be removed automatically.
 
 ## Dependencies
 

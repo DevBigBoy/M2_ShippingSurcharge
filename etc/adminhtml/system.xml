@@ -19,9 +19,8 @@
             </group>
         </section>
         <section id="sales">
-            <group id="totals_sort" translate="label">
-                <label>Shipping Surcharge</label>
-                <field id="surcharge" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1" >
+            <group id="totals_sort">
+                <field id="surcharge" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Shipping Surcharge</label>
                 </field>
             </group>

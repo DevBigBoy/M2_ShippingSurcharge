@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Market_ShippingSurcharge::config" title="Market ShippingSurcharge" sortOrder="50" />
+                            <resource id="Market_ShippingSurcharge::config" title="Shipping Surcharge" sortOrder="50" />
                         </resource>
                     </resource>
                 </resource>
