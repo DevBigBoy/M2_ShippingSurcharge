@@ -1,16 +1,29 @@
+<div align="center">
+
 # Market_ShippingSurcharge
 
-Magento 2 module that adds a per-product `shipping_surcharge` attribute and the necessary database columns to carry the surcharge amount through the quote, order, invoice, and credit memo lifecycle. It also displays the surcharge on the product detail page and provides a customisable explanatory note via a CMS static block.
+</div>
+
+<div align="center">
+
+[![Packagist Version](https://img.shields.io/packagist/v/market/module-shipping-surcharge?logo=packagist&sort=semver&label=packagist&style=for-the-badge)](https://packagist.org/packages/market/module-shipping-surcharge)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/market/module-shipping-surcharge?logo=composer&style=for-the-badge)](https://packagist.org/packages/market/module-shipping-surcharge/stats)
+![Supported Magento Versions](https://img.shields.io/badge/magento-%202.4-brightgreen.svg?logo=magento&longCache=true&style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-green?color=%23234&style=for-the-badge)
+
+</div>
+
+Magento 2 module that adds a per-product `shipping_surcharge` attribute and carries the surcharge amount through the full quote, order, invoice, and credit memo lifecycle. It calculates surcharges per item and quote, displays them on the product page, cart, and checkout summary, and persists them on order placement via an observer.
 
 ## Screenshots
 
-### Admin — Product Edit
+### Admin - Product Edit
 
 ![Admin product edit showing the Shipping Surcharge field](images/admin-product.png)
 
 The `Shipping Surcharge` price field appears in the **General** attribute group, scoped at the website level, alongside Price and Tax Class.
 
-### Frontend — Product Detail Page
+### Frontend - Product Detail Page
 
 ![Frontend product page showing the Additional Shipping Charge notice](images/catalog-product-view.png)
 
@@ -18,12 +31,32 @@ When a surcharge is set, an **Additional Shipping Charge** notice is rendered be
 
 ## Overview
 
-The `shipping_surcharge` attribute is a decimal price field scoped at the **website level**, meaning the surcharge can differ per website. It is intended to be read by shipping logic (e.g. a plugin or observer on the quote/order) to apply the extra cost at checkout.
+The `shipping_surcharge` attribute is a decimal price field scoped at the **website level**, meaning the surcharge can differ per website. The surcharge is multiplied by item quantity and accumulated across all cart items to produce a quote-level total.
 
 The module also:
 
-- Injects a surcharge amount block on the product detail page (`catalog_product_view` layout).
-- Creates a CMS static block (`surcharge_explanatory_note`) that is rendered as tooltip/note text alongside the surcharge amount. The block content is editable in **Content > Blocks** without a code deploy.
+- Calculates surcharge per item (`SurchargeCalculator`) and exposes an interface for custom rate calculation (`RateCalculatorInterface`).
+- Collects the surcharge as a native quote total (`Model\Quote\Address\Total\Surcharge`) so it appears in the totals block.
+- Persists surcharge values on quote items and the order via the `QuoteSubmit` observer on `sales_model_service_quote_submit_success`.
+- Displays surcharge on the **product detail page**, **cart item rows**, and **checkout order summary** (Knockout component).
+- Creates a CMS static block (`surcharge_explanatory_note`) for editable explanatory text alongside the surcharge amount.
+
+## Architecture
+
+```text
+Product attribute (shipping_surcharge)
+    │
+    ├── Model\Quote\Address\Total\Surcharge   ← quote total collector (collect/fetch)
+    │       └── SurchargeCalculator           ← surcharge × qty per item
+    │
+    ├── Observer\QuoteSubmit                  ← persists totals on order placement
+    │       └── SurchargeCalculator
+    │
+    └── Frontend
+            ├── Block\Product\Catalog         ← product detail page
+            ├── Block\Product\Cart\Item       ← cart item rows
+            └── JS: view/summary/surcharge    ← checkout sidebar total
+```
 
 ## Installation
 
@@ -53,13 +86,11 @@ bin/magento cache:flush
 
 ## Configuration
 
-After installation, navigate to:
-
 ### Stores > Configuration > Market > Shipping Surcharge
 
-| Field                     | Description                                       |
-|---------------------------|---------------------------------------------------|
-| Enable Shipping Surcharge | Enable or disable the surcharge feature globally  |
+| Field                     | Description                                      |
+|---------------------------|--------------------------------------------------|
+| Enable Shipping Surcharge | Enable or disable the surcharge feature globally |
 
 The surcharge total sort order can be configured under:
 
@@ -78,9 +109,24 @@ The surcharge total sort order can be configured under:
 | Used in product listing | Yes                  |
 | Visible on frontend     | No                   |
 
+## Surcharge Calculation
+
+`SurchargeCalculator` reads `shipping_surcharge` from the product and multiplies it by the item quantity (`qty` or `qty_ordered`). The total across all items becomes the quote-level surcharge.
+
+```text
+item_surcharge = product.shipping_surcharge × item.qty
+quote_surcharge = Σ item_surcharge
+```
+
+The `RateCalculatorInterface` is available for implementing custom surcharge adjustments to shipping rate results.
+
 ## Frontend Display
 
-The layout handle `catalog_product_view.xml` inserts the surcharge block into both `product.info.addtocart` and `product.info.addtocart.additional`. The block is rendered only when the product has a non-zero surcharge value.
+| Location            | Implementation                                                    |
+|---------------------|-------------------------------------------------------------------|
+| Product detail page | `Block\Product\Catalog` via `catalog_product_view.xml`            |
+| Cart item rows      | `Block\Product\Cart\Item` via `checkout_cart_index.xml`           |
+| Checkout summary    | Knockout component `surcharge.js` via `checkout_index_index.xml`  |
 
 ### Explanatory Note CMS Block
 
@@ -113,7 +159,7 @@ bin/magento setup:upgrade
 bin/magento cache:flush
 ```
 
-This will trigger the `revert()` method on the data patch, removing the `shipping_surcharge` product attribute. Note that database columns added via `db_schema.xml` will also be removed automatically.
+This will trigger the `revert()` method on the data patch, removing the `shipping_surcharge` product attribute. Database columns added via `db_schema.xml` will also be removed automatically.
 
 ## Dependencies
 
@@ -121,3 +167,4 @@ This will trigger the `revert()` method on the data patch, removing the `shippin
 - `Magento_Sales`
 - `Magento_Eav`
 - `Magento_Cms`
+- `Magento_Checkout`
