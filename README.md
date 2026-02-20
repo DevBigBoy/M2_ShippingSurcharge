@@ -15,6 +15,11 @@
 
 </div>
 
+> [!WARNING]
+> **This module is currently under active development and is not yet complete.**
+> It is not recommended for use in production environments. APIs, database schema,
+> and behaviour may change without notice until a stable release is published.
+
 Magento 2 module that adds a per-product `shipping_surcharge` attribute and carries the surcharge amount through the full quote, order, invoice, and credit memo lifecycle. It calculates surcharges per item and quote, displays them on the product page, cart, and checkout summary, and persists them on order placement via an observer.
 
 ## Screenshots
