@@ -2,7 +2,6 @@
 
 namespace Market\ShippingSurcharge\Calculator;
 
-
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Market\ShippingSurcharge\Api\Calculator\SurchargeCalculatorInterface;
 
