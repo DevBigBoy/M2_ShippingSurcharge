@@ -6,14 +6,6 @@
 
 </div>
 
-<div align="center">
-
-[![Packagist Version](https://img.shields.io/packagist/v/market/module-shipping-surcharge?logo=packagist&sort=semver&label=packagist&style=for-the-badge)](https://packagist.org/packages/market/module-shipping-surcharge)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/market/module-shipping-surcharge?logo=composer&style=for-the-badge)](https://packagist.org/packages/market/module-shipping-surcharge/stats)
-![Supported Magento Versions](https://img.shields.io/badge/magento-%202.4-brightgreen.svg?logo=magento&longCache=true&style=for-the-badge)
-![License](https://img.shields.io/badge/license-MIT-green?color=%23234&style=for-the-badge)
-
-</div>
 
 > [!WARNING]
 > **This module is currently under active development and is not yet complete.**
@@ -35,6 +27,18 @@ The `Shipping Surcharge` price field appears in the **General** attribute group,
 ![Frontend product page showing the Additional Shipping Charge notice](images/catalog-product-view.png)
 
 When a surcharge is set, an **Additional Shipping Charge** notice is rendered below the Add to Cart button.
+
+### Admin - Order View
+
+![Admin order view showing the Additional Shipping Charge in order totals](images/admin-order-view.png)
+
+The **Additional Shipping Charge** line appears in both the Shipping & Handling Information section and the Order Totals block, alongside Subtotal, Shipping & Handling, and Grand Total.
+
+### Frontend - Customer Order View
+
+![Customer order view showing the Additional Shipping Charge in order totals](images/customer-order-view.png)
+
+On the customer's **My Orders** detail page, the **Additional Shipping Charge** is displayed as a separate line in the order totals summary.
 
 ## Overview
 

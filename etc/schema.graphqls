@@ -1,0 +1,3 @@
+interface ProductInterface {
+    shipping_surcharge: Float @doc(description: "The shipping surcharge applied to the product.")
+}
